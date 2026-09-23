@@ -288,9 +288,96 @@ footer{
 }
 footer a{color:var(--text-muted)}
 footer a:hover{color:var(--primary)}
+
+/* Navbar */
+.navbar{
+  position:sticky;top:0;z-index:100;
+  background:var(--bg);border-bottom:1px solid var(--border);
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  transition:background .3s,box-shadow .3s;
+}
+@media(prefers-color-scheme:dark){
+  .navbar{box-shadow:0 1px 4px rgba(0,0,0,.3)}
+}
+.navbar .container{
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;
+}
+.navbar-brand{
+  font-family:var(--font-serif);font-weight:700;font-size:1.05rem;
+  color:var(--primary);white-space:nowrap;
+}
+.navbar-links{
+  display:flex;align-items:center;gap:4px;
+  list-style:none;padding:0;margin:0;
+}
+.navbar-links a{
+  display:inline-block;padding:6px 14px;border-radius:6px;
+  font-size:.85rem;font-weight:500;color:var(--text-secondary);
+  transition:all .2s;white-space:nowrap;
+}
+.navbar-links a:hover,.navbar-links a.active{
+  color:var(--primary);background:var(--bg-alt);
+}
+.navbar-links .nav-cta{
+  background:var(--primary);color:#fff !important;
+  padding:8px 18px;border-radius:8px;margin-left:8px;
+  font-weight:600;
+}
+.navbar-links .nav-cta:hover{
+  background:var(--primary-light);
+}
+@media(prefers-color-scheme:dark){
+  .navbar-links .nav-cta{background:var(--primary-dark);color:#fff !important}
+  .navbar-links .nav-cta:hover{background:var(--primary)}
+}
+
+/* Hamburger */
+.navbar-toggle{
+  display:none;background:none;border:none;cursor:pointer;
+  padding:8px;border-radius:6px;color:var(--text);
+}
+.navbar-toggle:hover{background:var(--bg-alt)}
+.navbar-toggle svg{width:24px;height:24px}
+
+@media(max-width:768px){
+  .navbar-toggle{display:block}
+  .navbar-links{
+    display:none;flex-direction:column;align-items:stretch;
+    position:absolute;top:56px;left:0;right:0;
+    background:var(--bg);border-bottom:1px solid var(--border);
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    padding:8px 16px 16px;gap:2px;
+  }
+  .navbar-links.open{display:flex}
+  .navbar-links a{padding:12px 16px;border-radius:8px;font-size:.95rem}
+  .navbar-links .nav-cta{margin-left:0;text-align:center;margin-top:8px}
+}
+
+/* Scroll offset for sticky navbar */
+section[id]{scroll-margin-top:64px}
 </style>
 </head>
 <body>
+
+<!-- Navbar -->
+<nav class="navbar" role="navigation" aria-label="Navegación principal">
+  <div class="container">
+    <a href="#" class="navbar-brand">H. Murillo</a>
+    <button class="navbar-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar-links">
+      <li><a href="#resumen">Resumen</a></li>
+      <li><a href="#logros">Logros</a></li>
+      <li><a href="#experiencia">Experiencia</a></li>
+      <li><a href="#certificaciones">Certificaciones</a></li>
+      <li><a href="#educacion">Educación</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="cv_hernan-murillo.pdf" class="nav-cta" download>Descargar CV</a></li>
+    </ul>
+  </div>
+</nav>
 
 <!-- Hero -->
 <header class="hero">
@@ -317,7 +404,7 @@ footer a:hover{color:var(--primary)}
 </header>
 
 <!-- Stats -->
-<section class="stats" aria-label="Métricas principales">
+<section id="metricas" class="stats" aria-label="Métricas principales">
   <div class="container">
     <div class="stats-grid">
       <div class="stat-card">
@@ -337,7 +424,7 @@ footer a:hover{color:var(--primary)}
 </section>
 
 <!-- Summary -->
-<section aria-label="Resumen profesional">
+<section id="resumen" aria-label="Resumen profesional">
   <div class="container">
     <div class="section-bar"></div>
     <h2 class="section-title">Resumen</h2>
@@ -348,7 +435,7 @@ footer a:hover{color:var(--primary)}
 </section>
 
 <!-- Top Achievements -->
-<section aria-label="Logros destacados" style="background:var(--bg-alt)">
+<section id="logros" aria-label="Logros destacados" style="background:var(--bg-alt)">
   <div class="container">
     <div class="section-bar"></div>
     <h2 class="section-title">Logros Destacados</h2>
@@ -374,7 +461,7 @@ footer a:hover{color:var(--primary)}
 </section>
 
 <!-- Experience -->
-<section aria-label="Experiencia profesional">
+<section id="experiencia" aria-label="Experiencia profesional">
   <div class="container">
     <div class="section-bar"></div>
     <h2 class="section-title">Experiencia Profesional</h2>
@@ -457,7 +544,7 @@ footer a:hover{color:var(--primary)}
 </section>
 
 <!-- Credentials -->
-<section class="credentials" aria-label="Certificaciones, idiomas y habilidades">
+<section id="certificaciones" class="credentials" aria-label="Certificaciones, idiomas y habilidades">
   <div class="container">
     <div class="section-bar"></div>
     <h2 class="section-title">Certificaciones y Habilidades</h2>
@@ -519,7 +606,7 @@ footer a:hover{color:var(--primary)}
 </section>
 
 <!-- Education -->
-<section aria-label="Educación">
+<section id="educacion" aria-label="Educación">
   <div class="container">
     <div class="section-bar"></div>
     <h2 class="section-title">Educación</h2>
@@ -632,6 +719,44 @@ footer a:hover{color:var(--primary)}
     <p>&copy; 2026 Hernán Enrique Murillo Rodríguez · Optimización de perfil por <a href="https://murilloconsulting.github.io/" target="_blank" rel="noopener">Murillo Consulting</a></p>
   </div>
 </footer>
+
+<script>
+(function(){
+  // Hamburger toggle
+  const toggle=document.querySelector('.navbar-toggle');
+  const links=document.querySelector('.navbar-links');
+  if(toggle&&links){
+    toggle.addEventListener('click',function(){
+      const open=links.classList.toggle('open');
+      toggle.classList.toggle('active',open);
+      toggle.setAttribute('aria-expanded',open);
+    });
+    // Close menu on link click (mobile)
+    links.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click',function(){
+        links.classList.remove('open');
+        toggle.classList.remove('active');
+        toggle.setAttribute('aria-expanded','false');
+      });
+    });
+  }
+  // Active link tracking via IntersectionObserver
+  const sections=document.querySelectorAll('section[id]');
+  const navLinks=document.querySelectorAll('.navbar-links a[href^="#"]');
+  if(sections.length&&'IntersectionObserver' in window){
+    const obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          navLinks.forEach(function(l){l.classList.remove('active')});
+          const active=document.querySelector('.navbar-links a[href="#'+e.target.id+'"]');
+          if(active) active.classList.add('active');
+        }
+      });
+    },{rootMargin:'-20% 0px -75% 0px'});
+    sections.forEach(function(s){obs.observe(s)});
+  }
+})();
+</script>
 
 </body>
 </html>
