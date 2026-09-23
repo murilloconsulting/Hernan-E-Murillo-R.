@@ -35,7 +35,7 @@
   --font-serif:'Source Serif 4',Georgia,serif;
 }
 @media(prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme="light"]){
     --primary:#5dade2;
     --primary-light:#85c1e9;
     --primary-dark:#2e86c1;
@@ -51,6 +51,22 @@
     --shadow:0 1px 3px rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.2);
     --shadow-lg:0 4px 6px rgba(0,0,0,.3),0 12px 24px rgba(0,0,0,.25);
   }
+}
+:root[data-theme="dark"]{
+  --primary:#5dade2;
+  --primary-light:#85c1e9;
+  --primary-dark:#2e86c1;
+  --secondary:#f5b041;
+  --secondary-light:#f8c471;
+  --text:#e2e8f0;
+  --text-secondary:#a0aec0;
+  --text-muted:#718096;
+  --bg:#0f172a;
+  --bg-alt:#1e293b;
+  --bg-card:#1e293b;
+  --border:#334155;
+  --shadow:0 1px 3px rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.2);
+  --shadow-lg:0 4px 6px rgba(0,0,0,.3),0 12px 24px rgba(0,0,0,.25);
 }
 html{scroll-behavior:smooth}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -328,9 +344,31 @@ footer a:hover{color:var(--primary)}
   background:var(--primary-light);
 }
 @media(prefers-color-scheme:dark){
-  .navbar-links .nav-cta{background:var(--primary-dark);color:#fff !important}
-  .navbar-links .nav-cta:hover{background:var(--primary)}
+  :root:not([data-theme="light"]) .navbar-links .nav-cta{background:var(--primary-dark);color:#fff !important}
+  :root:not([data-theme="light"]) .navbar-links .nav-cta:hover{background:var(--primary)}
 }
+:root[data-theme="dark"] .navbar-links .nav-cta{background:var(--primary-dark);color:#fff !important}
+:root[data-theme="dark"] .navbar-links .nav-cta:hover{background:var(--primary)}
+
+/* Theme toggle (sol/luna) */
+.theme-toggle{
+  background:none;border:none;cursor:pointer;
+  padding:6px;border-radius:8px;color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;margin-left:4px;
+}
+.theme-toggle:hover{color:var(--primary);background:var(--bg-alt)}
+.theme-toggle svg{width:20px;height:20px}
+.theme-toggle .icon-sun{display:none}
+.theme-toggle .icon-moon{display:block}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:block}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:none}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun{display:block}
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon{display:none}
+}
+:root[data-theme="light"] .theme-toggle .icon-sun{display:none}
+:root[data-theme="light"] .theme-toggle .icon-moon{display:block}
 
 /* Hamburger */
 .navbar-toggle{
@@ -376,6 +414,10 @@ section[id]{scroll-margin-top:64px}
       <li><a href="#contacto">Contacto</a></li>
       <li><a href="cv_hernan-murillo.pdf" class="nav-cta" download>Descargar CV</a></li>
     </ul>
+    <button class="theme-toggle" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">
+      <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 008.002-4.248 9.718 9.718 0 001-1.75z"/></svg>
+      <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+    </button>
   </div>
 </nav>
 
@@ -740,6 +782,27 @@ section[id]{scroll-margin-top:64px}
       });
     });
   }
+  // Theme toggle (sol/luna)
+  const themeBtn=document.querySelector('.theme-toggle');
+  if(themeBtn){
+    // Detect current effective theme
+    function getEffective(){
+      const saved=localStorage.getItem('theme');
+      if(saved) return saved;
+      return window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+    }
+    // Apply saved preference on load
+    var saved=localStorage.getItem('theme');
+    if(saved) document.documentElement.setAttribute('data-theme',saved);
+
+    themeBtn.addEventListener('click',function(){
+      var current=getEffective();
+      var next=current==='dark'?'light':'dark';
+      document.documentElement.setAttribute('data-theme',next);
+      try{localStorage.setItem('theme',next)}catch(e){}
+    });
+  }
+
   // Active link tracking via IntersectionObserver
   const sections=document.querySelectorAll('section[id]');
   const navLinks=document.querySelectorAll('.navbar-links a[href^="#"]');
